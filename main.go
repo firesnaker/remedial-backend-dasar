@@ -29,19 +29,35 @@ type InMemoryStudentManager struct {
 }
 
 func (manager InMemoryStudentManager) Login(id int) *Student {
-	return &Student{}
+	for _, currStudent := range manager.Students {
+		if currStudent.ID == id {
+			return &currStudent
+		}
+	}
+	return nil
 }
 
 func (manager InMemoryStudentManager) ViewStudentDetails(student *Student) string {
-	return ""
+	id := student.ID
+	firstName := student.FirstName
+	lastName := student.LastName
+	return fmt.Sprintf("Student ID: %d\nFirst Name: %s\nLast Name: %s", id, firstName, lastName)
 }
 
 func (manager InMemoryStudentManager) ViewCourseDetails(student *Student) string {
-	return ""
+	var courseMessage string = "Courses:"
+	for _, course := range student.Courses {
+		courseMessage += fmt.Sprintf("\nCourse ID: %d\nCourse Name: %s", course.ID, course.Name)
+	}
+	return courseMessage
 }
 
 func (manager InMemoryStudentManager) ViewGrades(student *Student) string {
-	return ""
+	var gradesMessage string = "Grades:"
+	for _, course := range student.Courses {
+		gradesMessage += fmt.Sprintf("\nCourse: %s\nGrade: %d", course.Name, student.Grades[course.ID])
+	}
+	return gradesMessage
 }
 
 func main() {
